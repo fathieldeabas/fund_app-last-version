@@ -1,0 +1,241 @@
+{% extends './base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block body %}
+<style>
+  label {
+    width: 100%;
+  }
+
+  .nice-select {
+    margin-bottom: 10px;
+  }
+</style>
+<!-- bradcam_area  -->
+<div class="bradcam_area bradcam_bg_1">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="bradcam_text">
+          <h3>{{funding_detail.title}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ bradcam_area  -->
+
+<div class="job_details_area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="job_details_header">
+          <div class="single_jobs white-bg d-flex justify-content-between">
+            <div class="jobs_left d-flex align-items-center">
+              <div class="thumb" style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                ">
+                <img src="{{funding_detail.image.url}}" alt="" width="82px" height="82px" />
+              </div>
+              <div class="jobs_conetent">
+                <a href="#">
+                  <h4>{{funding_detail.title}}</h4>
+                </a>
+                <div class="links_locat d-flex align-items-center">
+                  <div class="location">
+                    <p>
+                      <i class="fa fa-clock-o"></i>{{funding_detail.category}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="jobs_right">
+              <div class="apply_now">
+                <style>
+                  .reporthim {
+                    background: #effdf5;
+                    border-radius: 5px;
+                    border: 0;
+                  }
+
+                  .reporthim:hover {
+                    background: #00d363;
+                    color: #fff;
+                  }
+                </style>
+                <!--                                        -->
+                <a class="btn btn-outline-success reporthim" href="#" style="">
+                  Report
+                </a>
+                <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="descript_wrap white-bg">
+          <div class="single_wrap">
+            <h4>Funding Details</h4>
+            <p>{{funding_detail.details}}</p>
+            <p><h4> Start at :</h4> <span>{{funding_detail.start|date:'d M o'}}</span></p>
+            <p><h4> End at : </h4><span>{{funding_detail.end|date:'d M o'}}</span></p>
+            <p><h4> Category :</h4> <span>{{funding_detail.category}}</span></p>
+          </div>
+        </div>
+        <div class="descript_wrap white-bg">
+          <div class="single_wrap">
+            <hr />
+            <!-- Start Comments Section -->
+            <h4>Donate To This Project Now ..!</h4>
+            <form action="" method="post">
+
+              {% csrf_token %}
+              {%bootstrap_form donateform %}
+              {% if message%}
+              <div class="alert alert-danger" role="alert">
+                {{message}}
+              </div>
+              {%endif%}
+              <p>
+                <input type="submit" value="Donate" class="btn btn-outline-success reporthim"
+                  style="margin: 10px auto" />
+              </p>
+            </form>
+
+            <hr />
+            <!-- Start Comments Section -->
+            <h4>Add a New Comment</h4>
+            <form action="" method="post">
+
+              {% csrf_token %}
+              {%bootstrap_form commentform %}
+              <p>
+                <input type="submit" value="Add comment" class="btn btn-outline-success reporthim"
+                  style="margin: 10px auto" />
+              </p>
+            </form>
+            <div class="comment-conainer">
+
+              {% for comment in comments %}
+              <div class="comment">
+
+                {{ comment.comment|linebreaks }}
+              </div>
+              {% empty %}
+              <p>There are no comments yet.</p>
+              {% endfor %}
+            </div>
+
+            <p style="
+                border: 1px solid #7a838b38;
+                border-radius: 3px;
+                color: #7a838b;
+                font-size: 14px;
+                font-weight: 400;
+                padding: 5px;
+              ">
+            </p>
+          
+            
+
+            <!-- End Comments Section -->
+
+            <h4>Add a New Report</h4>
+            <form action="" method="get">
+
+              {% csrf_token %}
+              {%bootstrap_form reportform %}
+              <p>
+                <input type="submit" value="report" class="btn btn-outline-success reporthim"
+                  style="margin: 10px auto" />
+              </p>
+            </form>
+            <hr />
+            <h4>Images</h4>
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+              <ol class="carousel-indicators">
+                {% for image in images %}
+                <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}"
+                  class="{% if forloop.counter == 1 %}active{%endif%}"></li>
+                {% endfor %}
+              </ol>
+              <div class="carousel-inner">
+                {% for image in images %}
+                <div class=" carousel-item {% if forloop.counter == 1 %}active{%endif%} ">
+                  <img class="d-block w-100" src="/media/{{image}}" alt="First slide" height="400px" />
+                </div>
+                {% endfor %}
+              </div>
+              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="job_sumary">
+          <div class="summery_header">
+            <h3>Funding Summery</h3>
+          </div>
+          <div class="job_content">
+            <ul>
+              <li>
+                Start at: <span>{{funding_detail.start|date:'d M o'}}</span>
+              </li>
+              <li>End at: <span>{{funding_detail.end|date:'d M o'}}</span></li>
+              <li>Category: <span>{{funding_detail.category}}</span></li>
+              <li>Target: <span>{{funding_detail.target}} LE</span></li>
+              <li>Collected: <span>{{donations}} LE</span></li>
+
+            </ul>
+          </div>
+        </div>
+        <div class="share_wrap d-flex">
+          <span>Share at:</span>
+          <ul>
+            <li>
+              <a href="#"> <i class="fa fa-facebook"></i></a>
+            </li>
+            <li>
+              <a href="#"> <i class="fa fa-google-plus"></i></a>
+            </li>
+            <li>
+              <a href="#"> <i class="fa fa-twitter"></i></a>
+            </li>
+            <li>
+              <a href="#"> <i class="fa fa-envelope"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="share_wrap d-flex">
+          <span>Tags:</span>
+          <ul>
+            {%for tag in funding_detail.project_tags.all%}
+            <li class="badge badge-primary text-wrap"><a href="#">{{tag}}</a></li>
+            {%endfor%}
+          </ul>
+        </div>
+
+        {% if funding_detail.user.id == request.user.id %}
+        <div class="share_wrap d-flex" style="flex-direction:column">
+          <span class="mb-3">Cancel Fundunig:</span>
+          <a href="{% url 'funding:confirm_cancel' funding_detail.id %}" class="btn btn-outline-danger">Cancel</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
