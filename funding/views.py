@@ -128,6 +128,7 @@ def addfunding(request):
             myform = form.save(commit=False)
             myform.user = request.user
             myform.save()
+             form.save_m2m()
             for file in request.FILES.getlist('images'):
                 Project_pics(project=form.instance, pic=file).save()
             return redirect(reverse('funding:home'))
