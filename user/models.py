@@ -38,10 +38,10 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance )
 
-# @receiver(pre_save, sender=User)
-# def set_new_user_inactive(sender, instance, **kwargs):
-#     if instance._state.adding is True:
-#         print("Creating Inactive User")
-#         instance.is_active = False
-#     else:
-#         print("Updating User Record")
+@receiver(pre_save, sender=User)
+def set_new_user_inactive(sender, instance, **kwargs):
+    if instance._state.adding is True:
+        print("Creating Inactive User")
+        instance.is_active = False
+    else:
+        print("Updating User Record")
