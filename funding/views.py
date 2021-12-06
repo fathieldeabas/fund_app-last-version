@@ -65,7 +65,7 @@ def funding_details(request, id):
                 donateform = DonateForm()
             else:
                 message = "Sorry you can not add donations that greater than the target"
-                
+
         reportform=Report(data=request.GET)
         if reportform.is_valid():
             new_report=reportform.save(commit=False)
@@ -127,14 +127,16 @@ def addfunding(request):
         if form.is_valid():
             myform = form.save(commit=False)
             myform.user = request.user
+        
             myform.save()
+            form.save_m2m()
             for file in request.FILES.getlist('images'):
                 Project_pics(project=form.instance, pic=file).save()
             return redirect(reverse('funding:home'))
     else:
         form = FundingForm()
     return render(request, 'funding/funding_add.html', {'form': form})
-    pass
+    
 
 @login_required(login_url='login')
 def contacts(request):
